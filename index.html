@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine For My Love</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="bg-overlay"></div>
+    <div id="particle-container"></div>
+    <canvas id="confetti-canvas"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:99; display:none;"></canvas>
+
+    <!-- Music Control -->
+    <div class="music-btn" onclick="toggleMusic()">
+        <span id="music-icon">🔇</span>
+    </div>
+    <audio id="bg-music" loop>
+        <source src="music/ngay-dau-tien-lofi-ver-duc-phuc.mp3"
+            type="audio/mpeg">
+    </audio>
+
+    <section id="s1" class="screen active">
+        <div class="glass-card">
+            <div class="heart-pulse">❤️</div>
+            <h1 class="script-font">To My Valentine</h1>
+            <p style="margin-bottom: 15px;">Dành riêng cho Thảo cute</p>
+            <div id="love-counter"
+                style="margin-bottom: 20px; font-weight: bold; color: var(--pink-dark); font-size: 1.1rem;"></div>
+            <button onclick="toS2()">Khám phá ngay</button>
+        </div>
+    </section>
+
+    <section id="s2" class="screen">
+        <div class="book-container">
+            <div class="book">
+                <div class="page" id="p1" onclick="nextPage(1)">
+                    <div class="page-content cover">
+                        <h2 class="script-font">Nguyên Thảo</h2>
+                        <p style="font-size: 1.2rem; margin-top: 5px;">Our Memories</p>
+                        <small style="opacity: 0.8; margin-top: 20px;">👉 Chạm để mở</small>
+                    </div>
+                </div>
+                <div class="page" id="p2" onclick="nextPage(2)">
+                    <div class="page-content">
+                        <div class="text-box">
+                            <h3 style="color: #f72585;">Dear My Love</h3>
+                            <p class="quote" id="typewriter-text"></p> <!-- Text will be typed here -->
+                            <img src="assets/bs_13.jpg"
+                                style="width:100%; margin-top:15px; border-radius:10px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="page" id="p3" onclick="nextPage(3)">
+                    <div class="page-content">
+                        <h3 style="color: #4cc9f0; margin-bottom: 5px;">Kỷ Niệm Của Ta</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; width: 100%;">
+                            <img src="https://picsum.photos/100/100?random=2" style="width:100%; border-radius:5px;">
+                            <img src="https://picsum.photos/100/100?random=3" style="width:100%; border-radius:5px;">
+                            <img src="https://picsum.photos/100/100?random=4" style="width:100%; border-radius:5px;">
+                            <img src="https://picsum.photos/100/100?random=5" style="width:100%; border-radius:5px;">
+                        </div>
+                        <small style="margin-top: 10px;">Những ngày nắng đẹp ☀️</small>
+                    </div>
+                </div>
+                <div class="page" id="p4" onclick="nextPage(4)">
+                    <div class="page-content">
+                        <div class="text-box" style="border-color: #7209b7;">
+                            <h3 style="color: #7209b7;">Lời Hứa</h3>
+                            <p class="quote">"Dù mai này ra sao, anh vẫn sẽ nắm chặt tay em đi đến cuối con
+                                đường."</p>
+                            <div style="font-size: 30px; margin-top: 20px;">💍</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="btn-final" class="hidden-btn" onclick="toS3()">Món quà cuối cùng ✨</button>
+        </div>
+    </section>
+
+    <section id="s3" class="screen">
+        <div id="drag-container">
+            <div id="spin-container">
+                <!-- Images will be 3D rotated -->
+                <img src="https://picsum.photos/200/300?random=11" alt="">
+                <img src="https://picsum.photos/200/300?random=12" alt="">
+                <img src="https://picsum.photos/200/300?random=13" alt="">
+                <img src="https://picsum.photos/200/300?random=14" alt="">
+                <img src="https://picsum.photos/200/300?random=15" alt="">
+                <img src="https://picsum.photos/200/300?random=16" alt="">
+                <p>Anh yêu em!</p>
+            </div>
+            <div id="ground"></div>
+        </div>
+        <div class="final-text">Mãi bên nhau nhé ❤️</div>
+    </section>
+
+    <!-- Confetti Library (Lightweight) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
