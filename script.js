@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initParticles();
     startHeartRain();
     initLoveCounter();
+    initDrawingEffect();
 
     // Auto-play music interaction fix (User must interact first usually, but we try)
     document.body.addEventListener('click', () => {
@@ -223,22 +224,21 @@ function init3D() {
 }
 
 // --- Sky Lantern Effect (Replaces Confetti) ---
+// --- Sky Lantern Effect (Replaces Confetti) ---
 function triggerLanterns() {
     // Spawn lanterns continuously
-    for (let i = 0; i < 30; i++) {
-        setTimeout(() => {
-            const l = document.createElement('div');
-            l.className = 'lantern';
-            l.style.left = Math.random() * 100 + 'vw';
+    setInterval(() => {
+        const l = document.createElement('div');
+        l.className = 'lantern';
+        l.style.left = Math.random() * 100 + 'vw';
 
-            // Random sway
-            const duration = Math.random() * 5 + 10; // 10-15s float time
-            l.style.animationDuration = duration + 's';
+        // Random sway
+        const duration = Math.random() * 5 + 10; // 10-15s float time
+        l.style.animationDuration = duration + 's';
 
-            document.body.appendChild(l);
-            setTimeout(() => l.remove(), duration * 1000);
-        }, i * 800);
-    }
+        document.body.appendChild(l);
+        setTimeout(() => l.remove(), duration * 1000);
+    }, 800);
 }
 
 // --- Love Counter ---
@@ -259,4 +259,271 @@ function initLoveCounter() {
 
         counter.innerHTML = `Together: ${days} days <br> <span style="font-size: 0.8rem">${hours}h ${minutes}m ${seconds}s</span>`;
     }, 1000);
+}
+
+// --- Lock Screen Logic ---
+function addDigit(digit) {
+    const input = document.getElementById('passcode-input');
+    const errorMsg = document.getElementById('error-msg');
+
+    // Clear error if present
+    if (errorMsg.style.opacity === '1') {
+        errorMsg.style.opacity = '0';
+        input.value = '';
+    }
+
+    if (input.value.length < 4) {
+        input.value += digit;
+    }
+
+    // Auto-check
+    if (input.value.length === 4) {
+        setTimeout(checkPasscode, 300);
+    }
+}
+
+function clearInput() {
+    document.getElementById('passcode-input').value = '';
+}
+
+function checkPasscode() {
+    const input = document.getElementById('passcode-input');
+    const lockScreen = document.getElementById('lock-screen');
+    const errorMsg = document.getElementById('error-msg');
+
+    // Passcode: 1810
+    if (input.value === '1810') {
+        lockScreen.style.opacity = '0';
+        lockScreen.style.visibility = 'hidden';
+
+        // Try to play music if not already playing
+        const audio = document.getElementById('bg-music');
+        if (audio.paused && !isMusicPlaying) {
+            toggleMusic();
+        }
+    } else {
+        input.classList.add('shake');
+        errorMsg.style.opacity = '1';
+        setTimeout(() => {
+            input.classList.remove('shake');
+            input.value = ''; // Auto clear
+        }, 500);
+    }
+}
+
+// --- Heart Drawing Effect ---
+function initDrawingEffect() {
+    const colors = ['#ff0055', '#ffbd00', '#ffffff', '#ff99c8'];
+
+    document.addEventListener('mousemove', handleMove);
+    document.addEventListener('touchmove', handleMove);
+
+    function handleMove(e) {
+        const x = e.touches ? e.touches[0].clientX : e.clientX;
+        const y = e.touches ? e.touches[0].clientY : e.clientY;
+
+        // Rate limit creation (simple)
+        if (Math.random() > 0.2) return;
+
+        const p = document.createElement('div');
+        p.className = 'draw-particle';
+        p.innerText = '✨'; // Sparkle
+        p.style.position = 'fixed';
+        p.style.left = x + 'px';
+        p.style.top = y + 'px';
+        p.style.color = colors[Math.floor(Math.random() * colors.length)];
+        p.style.fontSize = Math.random() * 10 + 10 + 'px';
+        p.style.pointerEvents = 'none';
+        p.style.zIndex = '9999';
+        p.style.transition = 'all 1s ease-out';
+
+        document.body.appendChild(p);
+
+        setTimeout(() => p.remove(), 1000);
+    }
+}
+
+// --- Universe Effect ---
+function toS4() {
+    document.getElementById('s3').classList.remove('active');
+    setTimeout(() => {
+        document.getElementById('s3').style.display = 'none';
+        document.getElementById('s4').style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('s4').classList.add('active');
+            initUniverse();
+        }, 50);
+    }, 600);
+}
+
+function initUniverse() {
+    const canvas = document.getElementById('universe-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    let textCoordinates = [];
+
+    // Create text coordinates
+    function createText() {
+        ctx.fillStyle = 'white';
+        // Responsive font size
+        const fontSize = Math.min(window.innerWidth / 5, 100);
+        ctx.font = 'bold ' + fontSize + 'px Quicksand';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        ctx.fillText('Tài ❤️ Thảo', canvas.width / 2, canvas.height / 2);
+
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+        // Scan for pixels
+        for (let y = 0; y < canvas.height; y += 4) { // density
+            for (let x = 0; x < canvas.width; x += 4) {
+                if (imageData.data[(y * 4 * imageData.width) + (x * 4) + 3] > 128) {
+                    textCoordinates.push({ x: x, y: y });
+                }
+            }
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear text
+    }
+
+    createText();
+
+    // Particle Class
+    class Particle {
+        constructor(x, y) {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.targetX = x;
+            this.targetY = y;
+            this.size = Math.random() * 2 + 1;
+
+            // Lantern Palette (Warm & Glowing)
+            const palette = ['#ff9966', '#ff5e62', '#ffcc00', '#ffffff'];
+            this.color = palette[Math.floor(Math.random() * palette.length)];
+
+            this.speed = 0.05; // ease factor
+        }
+
+        update() {
+            let dx = this.targetX - this.x;
+            let dy = this.targetY - this.y;
+            this.x += dx * this.speed;
+            this.y += dy * this.speed;
+
+            // Interaction
+            // (Optional interaction logic can go here)
+        }
+
+        draw() {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.fill();
+        }
+    }
+
+    // Initialize particles
+    // Add extra background stars
+    for (let i = 0; i < 500; i++) {
+        textCoordinates.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height
+        });
+    }
+
+    // shuffle
+    textCoordinates.sort(() => Math.random() - 0.5);
+
+    textCoordinates.forEach(pos => {
+        particles.push(new Particle(pos.x, pos.y));
+    });
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+        }
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        // Simple reload or re-calc logic could go here
+    });
+}
+
+// --- Cinema Effect ---
+// --- Cinema Effect ---
+function toS5() {
+    // Stop Typewriter if running (optional but good practice)
+
+    // Transition from S2 (Book) to S5 (Cinema)
+    document.getElementById('s2').classList.remove('active');
+    setTimeout(() => {
+        document.getElementById('s2').style.display = 'none';
+        document.getElementById('s5').style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('s5').classList.add('active');
+            initCinema();
+        }, 50);
+    }, 600);
+}
+
+function toS3_fromS5() {
+    document.getElementById('s5').classList.remove('active');
+    setTimeout(() => {
+        document.getElementById('s5').style.display = 'none';
+        document.getElementById('s3').style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('s3').classList.add('active');
+            init3D();
+            triggerLanterns();
+        }, 50);
+    }, 600);
+}
+
+function initCinema() {
+    // Open curtains after a delay
+    setTimeout(() => {
+        document.getElementById('s5').classList.add('open-curtain');
+    }, 1000);
+
+    // Slideshow
+    const images = [
+        'assets/bs_13.jpg',
+        'https://picsum.photos/800/600?random=20',
+        'https://picsum.photos/800/600?random=21',
+        'https://picsum.photos/800/600?random=22',
+        'https://picsum.photos/800/600?random=23'
+    ];
+    let idx = 0;
+    const imgEl = document.getElementById('cinema-img');
+
+    // Initial image is static, start changing after first interval
+    const interval = setInterval(() => {
+        // Fade out
+        imgEl.style.opacity = '0';
+        setTimeout(() => {
+            idx++;
+
+            // Check if we reached the end
+            if (idx >= images.length) {
+                clearInterval(interval);
+                // Transition to next scene
+                toS3_fromS5();
+                return;
+            }
+
+            imgEl.src = images[idx];
+            // Fade in
+            imgEl.style.opacity = '1';
+        }, 500);
+    }, 4000); // Change every 4s
 }

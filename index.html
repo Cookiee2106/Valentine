@@ -13,6 +13,33 @@
 
 <body>
     <div class="bg-overlay"></div>
+
+    <!-- Màn hình khóa (Love Passcode) -->
+    <div id="lock-screen">
+        <div class="glass-card lock-content">
+            <h2 class="script-font" style="font-size: 2.5rem; margin-bottom: 20px;">Ngày mình yêu nhau?</h2>
+
+            <input type="password" id="passcode-input" placeholder="----" maxlength="4" readonly>
+
+            <div class="keypad">
+                <button class="key-btn" onclick="addDigit('1')">1</button>
+                <button class="key-btn" onclick="addDigit('2')">2</button>
+                <button class="key-btn" onclick="addDigit('3')">3</button>
+                <button class="key-btn" onclick="addDigit('4')">4</button>
+                <button class="key-btn" onclick="addDigit('5')">5</button>
+                <button class="key-btn" onclick="addDigit('6')">6</button>
+                <button class="key-btn" onclick="addDigit('7')">7</button>
+                <button class="key-btn" onclick="addDigit('8')">8</button>
+                <button class="key-btn" onclick="addDigit('9')">9</button>
+                <button class="key-btn action-btn" onclick="clearInput()">C</button>
+                <button class="key-btn" onclick="addDigit('0')">0</button>
+                <button class="key-btn action-btn" onclick="checkPasscode()">💗</button>
+            </div>
+
+            <p id="error-msg" style="color: #ff0055; margin-top: 10px; opacity: 0; transition: 0.3s;">Sai rồi nè! 😝</p>
+        </div>
+    </div>
+
     <div id="particle-container"></div>
     <canvas id="confetti-canvas"
         style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:99; display:none;"></canvas>
@@ -22,8 +49,7 @@
         <span id="music-icon">🔇</span>
     </div>
     <audio id="bg-music" loop>
-        <source src="music/ngay-dau-tien-lofi-ver-duc-phuc.mp3"
-            type="audio/mpeg">
+        <source src="music/ngay-dau-tien-lofi-ver-duc-phuc.mp3" type="audio/mpeg">
     </audio>
 
     <section id="s1" class="screen active">
@@ -52,8 +78,7 @@
                         <div class="text-box">
                             <h3 style="color: #f72585;">Dear My Love</h3>
                             <p class="quote" id="typewriter-text"></p> <!-- Text will be typed here -->
-                            <img src="assets/bs_13.jpg"
-                                style="width:100%; margin-top:15px; border-radius:10px;">
+                            <img src="assets/bs_13.jpg" style="width:100%; margin-top:15px; border-radius:10px;">
                         </div>
                     </div>
                 </div>
@@ -80,7 +105,7 @@
                     </div>
                 </div>
             </div>
-            <button id="btn-final" class="hidden-btn" onclick="toS3()">Món quà cuối cùng ✨</button>
+            <button id="btn-final" class="hidden-btn" onclick="toS5()">Món quà cuối cùng ✨</button>
         </div>
     </section>
 
@@ -99,6 +124,21 @@
             <div id="ground"></div>
         </div>
         <div class="final-text">Mãi bên nhau nhé ❤️</div>
+        <button class="universe-btn" onclick="toS4()">Vũ Trụ Của Chúng Ta 🌌</button>
+    </section>
+
+    <section id="s4" class="screen">
+        <canvas id="universe-canvas"></canvas>
+    </section>
+
+    <section id="s5" class="screen">
+        <div class="curtain left"></div>
+        <div class="curtain right"></div>
+        <div class="cinema-screen">
+            <div class="projector-light"></div>
+            <img id="cinema-img" src="assets/bs_13.jpg" alt="Memory">
+        </div>
+        <div class="cinema-seats"></div>
     </section>
 
     <!-- Confetti Library (Lightweight) -->
