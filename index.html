@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine For My Love</title>
+    <title>Valentine For Nguyên Thảo</title>
     <link rel="stylesheet" href="style.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap"
@@ -36,7 +36,7 @@
                 <button class="key-btn action-btn" onclick="checkPasscode()">💗</button>
             </div>
 
-            <p id="error-msg" style="color: #ff0055; margin-top: 10px; opacity: 0; transition: 0.3s;">Sai rồi nè! 😝</p>
+            <p id="error-msg" style="color: #ff0055; margin-top: 10px; opacity: 0; transition: 0.3s;">Sai rồi má! 😝</p>
         </div>
     </div>
 
@@ -56,10 +56,30 @@
         <div class="glass-card">
             <div class="heart-pulse">❤️</div>
             <h1 class="script-font">To My Valentine</h1>
-            <p style="margin-bottom: 15px;">Dành riêng cho Thảo cute</p>
+            <p style="margin-bottom: 15px;">Dành cho Thảo cute, xinh đẹp nhất thế giới</p>
             <div id="love-counter"
                 style="margin-bottom: 20px; font-weight: bold; color: var(--pink-dark); font-size: 1.1rem;"></div>
-            <button onclick="toS2()">Khám phá ngay</button>
+            <button onclick="toS6()">Nhận Quà 🎁</button>
+        </div>
+    </section>
+
+    <section id="s6" class="screen">
+        <div class="gift-container" onclick="openGift()">
+            <div class="gift-box">
+                <div class="gift-lid">
+                    <div class="gift-bow"></div>
+                </div>
+                <div class="gift-body"></div>
+            </div>
+            <div class="gift-content">
+                <div class="voucher">
+                    <h3>Voucher🎟️</h3>
+                    <p>Đi ăn JOOPII, BUSAN<br>🍲</p>
+                    <small>(Tặng thêm 2 nháy)</small>
+                </div>
+            </div>
+            <p class="hint-text">Chạm vào hộp để mở! 🎁</p>
+            <button id="btn-continue-book" class="hidden-btn" onclick="toS2()">Tiếp nhé 👉</button>
         </div>
     </section>
 
@@ -69,43 +89,64 @@
                 <div class="page" id="p1" onclick="nextPage(1)">
                     <div class="page-content cover">
                         <h2 class="script-font">Nguyên Thảo</h2>
-                        <p style="font-size: 1.2rem; margin-top: 5px;">Our Memories</p>
+                        <p style="font-size: 1.2rem; margin-top: 5px;">14/02/2026</p>
                         <small style="opacity: 0.8; margin-top: 20px;">👉 Chạm để mở</small>
                     </div>
                 </div>
                 <div class="page" id="p2" onclick="nextPage(2)">
                     <div class="page-content">
                         <div class="text-box">
-                            <h3 style="color: #f72585;">Dear My Love</h3>
+                            <h3 style="color: #f72585;">Gửi vk iuuuu</h3>
                             <p class="quote" id="typewriter-text"></p> <!-- Text will be typed here -->
-                            <img src="assets/bs_13.jpg" style="width:100%; margin-top:15px; border-radius:10px;">
+                            <img src="assets/z7518968459844_f59fb9cb4b0ccde4a6e34cdb4a7332c0.jpg" class="single-photo">
                         </div>
                     </div>
                 </div>
                 <div class="page" id="p3" onclick="nextPage(3)">
                     <div class="page-content">
                         <h3 style="color: #4cc9f0; margin-bottom: 5px;">Kỷ Niệm Của Ta</h3>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; width: 100%;">
-                            <img src="https://picsum.photos/100/100?random=2" style="width:100%; border-radius:5px;">
-                            <img src="https://picsum.photos/100/100?random=3" style="width:100%; border-radius:5px;">
-                            <img src="https://picsum.photos/100/100?random=4" style="width:100%; border-radius:5px;">
-                            <img src="https://picsum.photos/100/100?random=5" style="width:100%; border-radius:5px;">
+                        <div class="photo-grid">
+                            <img src="assets/z7518983507044_34b286d1997ba1dff2a526608f46bc27.jpg">
+                            <img src="assets/z7518983508837_6732b5a5e8c34df3401c014597ebaf48.jpg">
+                            <img src="assets/z7518983527646_3e8b05812ac50594df9d9a1a950f9be3.jpg">
+                            <img src="assets/z7518983533447_074805c93fb071e9f5b78e9e70778484.jpg">
                         </div>
-                        <small style="margin-top: 10px;">Những ngày nắng đẹp ☀️</small>
+                        <small style="margin-top: 10px;">Đi du lịch nè ☀️</small>
                     </div>
                 </div>
                 <div class="page" id="p4" onclick="nextPage(4)">
                     <div class="page-content">
                         <div class="text-box" style="border-color: #7209b7;">
-                            <h3 style="color: #7209b7;">Lời Hứa</h3>
-                            <p class="quote">"Dù mai này ra sao, anh vẫn sẽ nắm chặt tay em đi đến cuối con
-                                đường."</p>
+                            <h3 style="color: #7209b7;">Chúc vk</h3>
+                            <p class="quote">"Chúc vk luôn xinh đẹp, làm việc gì cũng suôn sẻ."</p>
                             <div style="font-size: 30px; margin-top: 20px;">💍</div>
                         </div>
                     </div>
                 </div>
+                <!-- New Pages -->
+                <div class="page" id="p5" onclick="nextPage(5)">
+                    <div class="page-content">
+                        <h3 style="color: #ff99c8;">Những Điều Nhỏ Bé</h3>
+                        <ul style="text-align: left; margin-top: 15px; font-size: 1.1rem; line-height: 1.6;">
+                            <li>🥰 Thích nhìn vk cười</li>
+                            <li>🍜 Cùng vk đi ăn nhiều món ngon</li>
+                            <li>🐱 Nuôi chôm chôm thiệt mập</li>
+                            <li>✈️ Đi du lịch nhiều nơi</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="page" id="p6" onclick="nextPage(6)">
+                    <div class="page-content">
+                        <div class="text-box" style="border-color: #ff0055;">
+                            <h3 style="color: #ff0055;">Tương Lai</h3>
+                            <p class="quote">"Mong là vk và chôm chôm sẽ ở bên cạnh ck thiệt lâu."</p>
+                            <img src="assets/z7518983523290_106acf078e632e0305161a19f42772fe.jpg" class="single-photo"
+                                style="transform: rotate(2deg);">
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button id="btn-final" class="hidden-btn" onclick="toS5()">Món quà cuối cùng ✨</button>
+            <button id="btn-final" class="hidden-btn" onclick="toS5()">Xem lại nhé ✨</button>
         </div>
     </section>
 
@@ -113,13 +154,13 @@
         <div id="drag-container">
             <div id="spin-container">
                 <!-- Images will be 3D rotated -->
-                <img src="https://picsum.photos/200/300?random=11" alt="">
-                <img src="https://picsum.photos/200/300?random=12" alt="">
-                <img src="https://picsum.photos/200/300?random=13" alt="">
-                <img src="https://picsum.photos/200/300?random=14" alt="">
-                <img src="https://picsum.photos/200/300?random=15" alt="">
-                <img src="https://picsum.photos/200/300?random=16" alt="">
-                <p>Anh yêu em!</p>
+                <img src="assets/z7518983525403_0c203ff77ad8818f75697caff9499b37.jpg" alt="">
+                <img src="assets/z7518983541407_395b7029b5ddc3d064dac2f22c4a051d.jpg" alt="">
+                <img src="assets/z7518983546337_5fd0aadcaed1157007ba83618d63e708.jpg" alt="">
+                <img src="assets/z7518983553118_3b83f587b3cd55f98c6f83b084231ce8.jpg" alt="">
+                <img src="assets/z7518983553421_0282c55ebb49e0f88964a32ca9fabbf8.jpg" alt="">
+                <img src="assets/z7518983561142_1fe52528cd0ace48e425e0c246de1a30.jpg" alt="">
+                <p>Ck yêu vk!</p>
             </div>
             <div id="ground"></div>
         </div>
@@ -136,7 +177,7 @@
         <div class="curtain right"></div>
         <div class="cinema-screen">
             <div class="projector-light"></div>
-            <img id="cinema-img" src="assets/bs_13.jpg" alt="Memory">
+            <img id="cinema-img" src="assets/z7518968459844_f59fb9cb4b0ccde4a6e34cdb4a7332c0.jpg" alt="Memory">
         </div>
         <div class="cinema-seats"></div>
     </section>

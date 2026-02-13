@@ -261,18 +261,26 @@ body {
 
 /* Layering logic: Higher number means on top */
 #p1 {
-    z-index: 4;
+    z-index: 6;
 }
 
 #p2 {
-    z-index: 3;
+    z-index: 5;
 }
 
 #p3 {
-    z-index: 2;
+    z-index: 4;
 }
 
 #p4 {
+    z-index: 3;
+}
+
+#p5 {
+    z-index: 2;
+}
+
+#p6 {
     z-index: 1;
 }
 
@@ -291,18 +299,88 @@ body {
 .page-content {
     width: 100%;
     height: 100%;
-    background: #fff0f5;
-    /* Light pink paper */
-    padding: 20px;
+    background: linear-gradient(to right, #e8e8e8 0%, #fff 5%, #fff 95%, #e8e8e8 100%);
+    /* Paper curve effect */
+    padding: 25px;
     border-radius: 0 15px 15px 0;
-    box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.05), 5px 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     backface-visibility: hidden;
-    color: #333;
-    /* Dark text for readability on paper */
+    color: #444;
+    border: 1px solid #ddd;
+    /* Subtle edge */
+    position: relative;
+}
+
+/* Decorative frame inside page */
+.page-content::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border: 2px dashed rgba(0, 0, 0, 0.1);
+    border-radius: 0 10px 10px 0;
+    pointer-events: none;
+}
+
+.text-box {
+    border: 3px double #ff99c8;
+    /* Elegant double border */
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Photo Styles */
+.photo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.photo-grid img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    /* Force square */
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 3px solid white;
+    /* Polaroid-ish tiny border */
+}
+
+.single-photo {
+    width: 90%;
+    max-height: 220px !important;
+    object-fit: cover !important;
+    border: 5px solid white;
+    border-bottom-width: 15px;
+    /* Polaroid bottom */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    background: white;
+    transform: rotate(-2deg);
+    /* Artistic tilt */
+    margin-top: 15px;
+    border-radius: 2px;
+}
+
+/* Default img fallback if needed, but classes should cover it */
+.page-content img:not(.single-photo):not(.photo-grid img) {
+    max-height: 200px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    margin-top: 15px;
+    border-radius: 10px;
 }
 
 .cover {
@@ -627,9 +705,21 @@ button:hover {
 
 /* Cinema Section */
 #s5 {
-    background: #111;
+    background: #000;
+    /* Pure black background */
     overflow: hidden;
     perspective: 1000px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+#s5.active {
+    display: flex;
+    opacity: 1;
 }
 
 .curtain {
@@ -639,7 +729,7 @@ button:hover {
     height: 100%;
     background: linear-gradient(90deg, #800020, #400010);
     /* Burgundy Velvet */
-    z-index: 10;
+    z-index: 999;
     transition: transform 3s ease-in-out;
     box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8);
 }
@@ -672,20 +762,25 @@ button:hover {
     overflow: hidden;
     transform: scale(0.8);
     opacity: 0;
-    transition: 2s;
+    transition: transform 2s, opacity 2s;
+    transition-delay: 0s;
+    /* Reset delay when closing if needed, or default */
 }
 
 #s5.open-curtain .cinema-screen {
     transform: scale(1);
     opacity: 1;
+    transition-delay: 2.5s;
+    /* Start appearing slightly before curtains finish */
 }
 
 #cinema-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    filter: sepia(0.3) contrast(1.2);
-    /* Vintage look */
+    object-fit: contain;
+    /* Show full image */
+    filter: sepia(0.2) contrast(1.1);
+    /* Reduced vintage effect for clarity */
     animation: flickerScreen 0.1s infinite;
 }
 
@@ -731,4 +826,200 @@ button:hover {
     100% {
         opacity: 0.3;
     }
+}
+
+/* Mystery Box Section */
+#s6 {
+    background: radial-gradient(circle at center, #1a0b2e, #000000);
+    /* Dark Cosmic */
+    perspective: 1200px;
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 1s ease;
+    z-index: 10;
+}
+
+#s6.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* GIFT BOX - 2D CSS */
+.gift-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 50px;
+    cursor: pointer;
+}
+
+.gift-box {
+    position: relative;
+    width: 150px;
+    height: 120px;
+    animation: bounce 2s infinite;
+}
+
+.gift-box.open {
+    animation: none;
+}
+
+/* Lid */
+.gift-lid {
+    position: absolute;
+    top: -30px;
+    left: -10px;
+    width: 170px;
+    height: 40px;
+    background: #ff0055;
+    border-radius: 5px;
+    z-index: 2;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.gift-lid::before {
+    /* Lid Ribbon */
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 100%;
+    background: #ffd700;
+}
+
+.gift-bow {
+    /* Bow on top */
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 30px;
+}
+
+.gift-bow::before,
+.gift-bow::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 5px solid #ffd700;
+    border-radius: 50%;
+    top: 0;
+}
+
+.gift-bow::before {
+    left: -15px;
+    transform: rotate(-15deg);
+}
+
+.gift-bow::after {
+    right: -15px;
+    transform: rotate(15deg);
+}
+
+/* Body */
+.gift-body {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: #ff3366;
+    border-radius: 0 0 5px 5px;
+    z-index: 1;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.gift-body::before {
+    /* Body Ribbon */
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 100%;
+    background: #ffd700;
+}
+
+/* Open Animation */
+.gift-box.open .gift-lid {
+    transform: translateY(-80px) rotate(-20deg);
+}
+
+/* Gift Content - Pop out */
+.gift-content {
+    position: absolute;
+    bottom: 50%;
+    /* Start inside box */
+    left: 50%;
+    transform: translate(-50%, 50%) scale(0);
+    width: 180px;
+    height: 120px;
+    background: white;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0 0 20px gold;
+    z-index: 0;
+    /* Behind front of box initially? No, needs to pop OUT. */
+    /* Actually z-index 0 is behind box body(1). Good. */
+    transition: transform 0.6s 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.gift-box.open+.gift-content {
+    /* Pop up ABOVE the box */
+    transform: translate(-50%, -120%) scale(1.1) rotate(5deg);
+    z-index: 5;
+    /* Come to front */
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.voucher h3 {
+    color: #d63384;
+    margin: 0;
+    font-size: 1rem;
+}
+
+.voucher p {
+    color: #333;
+    font-size: 0.8rem;
+    margin: 5px 0;
+}
+
+.hint-text {
+    position: absolute;
+    bottom: -60px;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    animation: pulse 2s infinite;
+}
+
+#btn-continue-book {
+    position: absolute;
+    bottom: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    white-space: nowrap;
 }

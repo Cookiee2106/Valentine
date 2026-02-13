@@ -131,15 +131,44 @@ document.addEventListener('click', (e) => {
 });
 
 // --- Screen Transitions ---
-function toS2() {
+function toS6() {
     // Try to play music if not already playing
     if (!isMusicPlaying) toggleMusic();
 
     document.getElementById('s1').classList.remove('active');
     setTimeout(() => {
         document.getElementById('s1').style.display = 'none';
+        document.getElementById('s6').style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('s6').classList.add('active');
+        }, 50);
+    }, 600);
+}
+
+function openGift() {
+    const giftBox = document.querySelector('.gift-box');
+    if (giftBox.classList.contains('open')) return;
+
+    giftBox.classList.add('open');
+    document.querySelector('.hint-text').style.opacity = '0';
+
+    setTimeout(() => {
+        const btn = document.getElementById('btn-continue-book');
+        btn.style.display = 'block';
+        setTimeout(() => btn.style.opacity = '1', 100);
+    }, 1500);
+}
+
+function toS2() {
+    // Transition from S6 (Gift) to S2 (Book)
+    document.getElementById('s6').classList.remove('active');
+    setTimeout(() => {
+        document.getElementById('s6').style.display = 'none';
         document.getElementById('s2').style.display = 'flex';
-        setTimeout(() => document.getElementById('s2').classList.add('active'), 50);
+        setTimeout(() => {
+            document.getElementById('s2').classList.add('active');
+            typeWriter(); // Start typing effect when book opens
+        }, 50);
     }, 600);
 }
 
@@ -158,6 +187,10 @@ function nextPage(num) {
     }
 
     if (num === 4) {
+        // Just a normal page turn now
+    }
+
+    if (num === 6) {
         const btn = document.getElementById('btn-final');
         btn.style.display = 'block';
         setTimeout(() => btn.style.opacity = '1', 100);
@@ -257,7 +290,7 @@ function initLoveCounter() {
         const minutes = Math.floor((diff / (1000 * 60)) % 60);
         const seconds = Math.floor((diff / 1000) % 60);
 
-        counter.innerHTML = `Together: ${days} days <br> <span style="font-size: 0.8rem">${hours}h ${minutes}m ${seconds}s</span>`;
+        counter.innerHTML = `Hai mình đã bên nhau: ${days} ngày <br> <span style="font-size: 0.8rem">${hours}h ${minutes}m ${seconds}s</span>`;
     }, 1000);
 }
 
@@ -374,7 +407,7 @@ function initUniverse() {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        ctx.fillText('Tài ❤️ Thảo', canvas.width / 2, canvas.height / 2);
+        ctx.fillText('Đại Tài ❤️ Nguyên Thảo', canvas.width / 2, canvas.height / 2);
 
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
@@ -466,13 +499,26 @@ function toS5() {
 
     // Transition from S2 (Book) to S5 (Cinema)
     document.getElementById('s2').classList.remove('active');
+
+    const s5 = document.getElementById('s5');
+    // Ensure curtains are closed initially
+    s5.classList.remove('open-curtain');
+    s5.classList.remove('active');
+
     setTimeout(() => {
         document.getElementById('s2').style.display = 'none';
-        document.getElementById('s5').style.display = 'flex';
+        s5.style.display = 'flex';
+
+        // Force Reflow
+        void s5.offsetWidth;
+
+        // Fade In the Cinema (Curtains Closed)
+        s5.classList.add('active');
+
+        // Wait for user to register the closed curtains (1.5s), then open them
         setTimeout(() => {
-            document.getElementById('s5').classList.add('active');
             initCinema();
-        }, 50);
+        }, 1500);
     }, 600);
 }
 
@@ -497,33 +543,49 @@ function initCinema() {
 
     // Slideshow
     const images = [
-        'assets/bs_13.jpg',
-        'https://picsum.photos/800/600?random=20',
-        'https://picsum.photos/800/600?random=21',
-        'https://picsum.photos/800/600?random=22',
-        'https://picsum.photos/800/600?random=23'
+        'assets/z7518983504557_f1973ee7666a9a0ae01f9694314c5644.jpg',
+        'assets/z7518983512447_32bd1bab017a0777b641061fd10aec26.jpg',
+        'assets/z7518983538317_93af65f9bc2b983141e7addd1c14121d.jpg',
+        'assets/z7518983551514_922b4e7a750dd7e0471fe57c8923d418.jpg',
+        'assets/z7518983563579_eda81b3ec0d87de218b16e9ff006c948.jpg',
+        'assets/z7519067506301_8c44bb36dda2129076b7f23c9ea59d38.jpg',
+        'assets/z7519067506401_4af5f2c1121c19fddecf38afeb7af267.jpg',
+        'assets/z7519067506493_f96042361bd14f276a5ae23f9af6041a.jpg',
+        'assets/z7519067514488_ff09dcc45428c675856efeb3e43ea13b.jpg',
+        'assets/z7519067514598_a14332d880be0284afb184e5f0accf5c.jpg',
+        'assets/z7519067525583_cca08ec7a88c4410ee9f0a24afd0eb67.jpg',
+        'assets/z7519067516325_3c8bb1e7257d24ed272dd396c0524c37.jpg',
+        'assets/z7519067520979_fbe5a87e9adcc86902762bb533f4c4ff.jpg',
+        'assets/z7519067527004_d4ba0c50c19b8c689a840ea1173503e0.jpg',
+        'assets/z7519067530969_94221975f9cd6b73c03b3562e9c8d9db.jpg',
+        'assets/z7518983572739_a95e0e81cb74e1e4fc50c0200ed43eae.jpg'
     ];
     let idx = 0;
     const imgEl = document.getElementById('cinema-img');
 
-    // Initial image is static, start changing after first interval
-    const interval = setInterval(() => {
-        // Fade out
-        imgEl.style.opacity = '0';
-        setTimeout(() => {
-            idx++;
+    // Set initial image
+    imgEl.src = images[0];
 
-            // Check if we reached the end
-            if (idx >= images.length) {
-                clearInterval(interval);
-                // Transition to next scene
-                toS3_fromS5();
-                return;
-            }
+    // Wait for curtain (3s) + screen fade (2s) + viewing time (3s) = ~8s before changing
+    setTimeout(() => {
+        const interval = setInterval(() => {
+            // Fade out
+            imgEl.style.opacity = '0';
+            setTimeout(() => {
+                idx++;
 
-            imgEl.src = images[idx];
-            // Fade in
-            imgEl.style.opacity = '1';
-        }, 500);
-    }, 4000); // Change every 4s
+                // Check if we reached the end
+                if (idx >= images.length) {
+                    clearInterval(interval);
+                    // Transition to next scene
+                    toS3_fromS5();
+                    return;
+                }
+
+                imgEl.src = images[idx];
+                // Fade in
+                imgEl.style.opacity = '1';
+            }, 500);
+        }, 2500); // Change every 2.5s
+    }, 5500); // Faster start
 }
